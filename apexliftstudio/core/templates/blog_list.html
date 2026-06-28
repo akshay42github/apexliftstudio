@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Blog - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="pt-20 bg-white">
+    <!-- Header -->
+    <section class="py-20 bg-gradient-to-r from-dark-gray to-gray-900 text-white">
+        <div class="container mx-auto px-4 text-center" data-aos="fade-up">
+            <h1 class="text-5xl font-bold mb-4">Fitness Blog</h1>
+            <p class="text-xl text-gray-300">Tips, guides, and inspiration for your fitness journey</p>
+        </div>
+    </section>
+    
+    <!-- Search -->
+    <section class="py-8 bg-light-gray">
+        <div class="container mx-auto px-4">
+            <form method="get" class="max-w-2xl mx-auto">
+                <div class="flex">
+                    <input type="text" name="q" value="{{ search_query }}" placeholder="Search articles..." 
+                           class="flex-1 px-6 py-3 rounded-l-full border border-gray-300 focus:border-gold focus:outline-none">
+                    <button type="submit" class="bg-gold text-dark-gray px-8 py-3 rounded-r-full font-bold hover:bg-yellow-500 transition duration-300">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+    
+    <!-- Blog Posts -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            {% if posts %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                {% for post in posts %}
+                <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:50 }}">
+                    {% if post.featured_image %}
+                    <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-48 object-cover">
+                    {% else %}
+                    <div class="w-full h-48 bg-gradient-to-br from-gold to-yellow-500 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-dark-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
+                        </svg>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span>{{ post.published_at|date:"M d, Y" }}</span>
+                            <span class="mx-2">•</span>
+                            <span>{{ post.author.get_full_name|default:post.author.username }}</span>
+                            <span class="mx-2">•</span>
+                            <span>{{ post.views_count }} views</span>
+                        </div>
+                        
+                        <h2 class="text-2xl font-bold mb-3 text-dark-gray hover:text-gold transition duration-300">
+                            <a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a>
+                        </h2>
+                        
+                        <p class="text-gray-600 mb-4">{{ post.excerpt|default:post.body|truncatewords:20 }}</p>
+                        
+                        {% if post.tags %}
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            {% for tag in post.get_tags_list %}
+                            <span class="bg-gold bg-opacity-20 text-dark-gray px-3 py-1 rounded-full text-xs">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        <a href="{% url 'blog_detail' post.slug %}" class="text-gold font-semibold hover:underline">
+                            Read More →
+                        </a>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-16">
+                <svg class="w-24 h-24 text-gray-400 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <h3 class="text-2xl font-bold text-gray-700 mb-4">No Blog Posts Found</h3>
+                <p class="text-gray-600 mb-8">
+                    {% if search_query %}
+                    No results for "{{ search_query }}". Try a different search term.
+                    {% else %}
+                    Check back soon for new articles and fitness tips!
+                    {% endif %}
+                </p>
+                {% if search_query %}
+                <a href="{% url 'blog_list' %}" class="bg-gold text-dark-gray px-8 py-3 rounded-full font-bold hover:bg-yellow-500 transition duration-300 inline-block">
+                    View All Posts
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}

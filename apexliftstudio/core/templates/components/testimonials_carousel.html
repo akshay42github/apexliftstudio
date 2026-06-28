@@ -1,0 +1,124 @@
+<section class="py-20 bg-light-gray">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h2 class="text-4xl font-bold text-dark-gray mb-4">What Our Members Say</h2>
+            <p class="text-xl text-gray-600">Real transformations, real results</p>
+        </div>
+
+        <div class="relative max-w-6xl mx-auto">
+            <!-- Testimonials Container -->
+            <div id="testimonials-container" class="overflow-hidden">
+                <div id="testimonials-track" class="flex transition-transform duration-500">
+                    {% for testimonial in testimonials %}
+                    <div class="w-full flex-shrink-0 px-4">
+                        <div class="bg-white p-8 rounded-2xl shadow-lg" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                            <!-- Stars -->
+                            <div class="flex mb-4">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= testimonial.rating %}
+                                    <svg class="w-5 h-5 text-gold fill-current" viewBox="0 0 20 20">
+                                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                    </svg>
+                                    {% else %}
+                                    <svg class="w-5 h-5 text-gray-300 fill-current" viewBox="0 0 20 20">
+                                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                    </svg>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
+                            <!-- Content -->
+                            <p class="text-gray-700 text-lg mb-6 italic">"{{ testimonial.content }}"</p>
+
+                            <!-- Author -->
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 bg-gold rounded-full flex items-center justify-center text-dark-gray font-bold text-xl">
+                                    {{ testimonial.user_name|slice:":1" }}
+                                </div>
+                                <div class="ml-4">
+                                    <div class="font-semibold text-dark-gray">{{ testimonial.user_name }}</div>
+                                    {% if testimonial.membership_plan %}
+                                    <div class="text-sm text-gray-500">{{ testimonial.membership_plan.name }} Member</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            {% if testimonials|length > 1 %}
+            <button id="prev-testimonial" class="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-gold text-dark-gray p-3 rounded-full shadow-lg hover:bg-yellow-500 transition duration-300 z-10">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </button>
+            <button id="next-testimonial" class="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-gold text-dark-gray p-3 rounded-full shadow-lg hover:bg-yellow-500 transition duration-300 z-10">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </button>
+
+            <!-- Indicators -->
+            <div class="flex justify-center mt-8 space-x-2">
+                {% for testimonial in testimonials %}
+                <button class="testimonial-indicator w-3 h-3 rounded-full bg-gray-300 hover:bg-gold transition duration-300" data-index="{{ forloop.counter0 }}"></button>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const track = document.getElementById('testimonials-track');
+    const prevBtn = document.getElementById('prev-testimonial');
+    const nextBtn = document.getElementById('next-testimonial');
+    const indicators = document.querySelectorAll('.testimonial-indicator');
+    const totalTestimonials = {{ testimonials|length }};
+    let currentIndex = 0;
+
+    function updateCarousel() {
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        indicators.forEach((indicator, index) => {
+            if (index === currentIndex) {
+                indicator.classList.remove('bg-gray-300');
+                indicator.classList.add('bg-gold');
+            } else {
+                indicator.classList.remove('bg-gold');
+                indicator.classList.add('bg-gray-300');
+            }
+        });
+    }
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + totalTestimonials) % totalTestimonials;
+            updateCarousel();
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % totalTestimonials;
+            updateCarousel();
+        });
+    }
+
+    indicators.forEach(indicator => {
+        indicator.addEventListener('click', () => {
+            currentIndex = parseInt(indicator.dataset.index);
+            updateCarousel();
+        });
+    });
+
+    // Auto-advance every 5 seconds
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % totalTestimonials;
+        updateCarousel();
+    }, 5000);
+});
+</script>

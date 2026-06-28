@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="pt-20 bg-light-gray min-h-screen">
+    <div class="container mx-auto px-4 py-12">
+        <!-- Welcome Section -->
+        <div class="mb-8" data-aos="fade-up">
+            <h1 class="text-4xl font-bold text-dark-gray mb-2">Welcome back, {{ user.first_name|default:user.username }}!</h1>
+            <p class="text-gray-600">Here's your fitness overview</p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Main Content -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Membership Status -->
+                <div class="bg-white rounded-2xl shadow-lg p-8" data-aos="fade-up">
+                    <h2 class="text-2xl font-bold mb-6 text-dark-gray">Membership Status</h2>
+                    
+                    {% if active_membership %}
+                    <div class="bg-gradient-to-r from-gold to-yellow-500 text-dark-gray rounded-xl p-6 mb-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-2xl font-bold">{{ active_membership.plan.name }} Member</h3>
+                                <p class="text-sm opacity-80">Active until {{ active_membership.end_date|date:"M d, Y" }}</p>
+                            </div>
+                            <span class="bg-dark-gray text-white px-4 py-1 rounded-full text-sm font-semibold">ACTIVE</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <div class="opacity-80">Start Date</div>
+                                <div class="font-semibold">{{ active_membership.start_date|date:"M d, Y" }}</div>
+                            </div>
+                            <div>
+                                <div class="opacity-80">Auto-Renew</div>
+                                <div class="font-semibold">{{ active_membership.auto_renew|yesno:"Yes,No" }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <a href="{% url 'plans' %}" class="bg-dark-gray text-white py-3 rounded-lg font-semibold text-center hover:bg-gray-800 transition duration-300">
+                            Upgrade Plan
+                        </a>
+                        <a href="{% url 'classes' %}" class="border-2 border-dark-gray text-dark-gray py-3 rounded-lg font-semibold text-center hover:bg-dark-gray hover:text-white transition duration-300">
+                            Book Classes
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-8">
+                        <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        <h3 class="text-xl font-bold text-gray-700 mb-2">No Active Membership</h3>
+                        <p class="text-gray-600 mb-6">Choose a plan to start your fitness journey</p>
+                        <a href="{% url 'plans' %}" class="bg-gold text-dark-gray px-8 py-3 rounded-full font-bold hover:bg-yellow-500 transition duration-300 inline-block">
+                            View Plans
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Upcoming Classes -->
+                <div class="bg-white rounded-2xl shadow-lg p-8" data-aos="fade-up" data-aos-delay="100">
+                    <h2 class="text-2xl font-bold mb-6 text-dark-gray">Upcoming Classes</h2>
+                    
+                    {% if upcoming_bookings %}
+                    <div class="space-y-4">
+                        {% for booking in upcoming_bookings %}
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition duration-300">
+                            <div class="flex justify-between items-start">
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-bold text-dark-gray mb-1">{{ booking.class_instance.title }}</h3>
+                                    <div class="text-sm text-gray-600 space-y-1">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4 mr-2 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            {{ booking.class_instance.start_time|date:"D, M d @ g:i A" }}
+                                        </div>
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4 mr-2 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                            </svg>
+                                            {{ booking.class_instance.trainer.name }}
+                                        </div>
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4 mr-2 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            </svg>
+                                            {{ booking.class_instance.location.name }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">Confirmed</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-8">
+                        <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <p class="text-gray-600 mb-6">No upcoming classes booked</p>
+                        <a href="{% url 'classes' %}" class="bg-dark-gray text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-800 transition duration-300 inline-block">
+                            Browse Classes
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Payment History -->
+                <div class="bg-white rounded-2xl shadow-lg p-8" data-aos="fade-up" data-aos-delay="200">
+                    <h2 class="text-2xl font-bold mb-6 text-dark-gray">Payment History</h2>
+                    
+                    {% if payments %}
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-gray-200">
+                                    <th class="text-left py-3 px-2 text-sm font-semibold text-gray-700">Date</th>
+                                    <th class="text-left py-3 px-2 text-sm font-semibold text-gray-700">Description</th>
+                                    <th class="text-right py-3 px-2 text-sm font-semibold text-gray-700">Amount</th>
+                                    <th class="text-center py-3 px-2 text-sm font-semibold text-gray-700">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for payment in payments %}
+                                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                    <td class="py-3 px-2 text-sm">{{ payment.created_at|date:"M d, Y" }}</td>
+                                    <td class="py-3 px-2 text-sm">{{ payment.description|default:"Membership Payment" }}</td>
+                                    <td class="py-3 px-2 text-sm text-right font-semibold">${{ payment.amount }}</td>
+                                    <td class="py-3 px-2 text-center">
+                                        {% if payment.status == 'succeeded' %}
+                                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">Paid</span>
+                                        {% elif payment.status == 'pending' %}
+                                        <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-semibold">Pending</span>
+                                        {% else %}
+                                        <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-semibold">{{ payment.status|title }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-center text-gray-600 py-8">No payment history yet</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="space-y-8">
+                <!-- Quick Stats -->
+                <div class="bg-white rounded-2xl shadow-lg p-6" data-aos="fade-up">
+                    <h3 class="text-xl font-bold mb-4 text-dark-gray">Quick Stats</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Classes Booked</span>
+                            <span class="text-2xl font-bold text-gold">{{ upcoming_bookings|length }}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Membership Days</span>
+                            <span class="text-2xl font-bold text-gold">
+                                {% if active_membership %}
+                                {{ active_membership.end_date|timeuntil|truncatewords:1 }}
+                                {% else %}
+                                0
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Total Payments</span>
+                            <span class="text-2xl font-bold text-gold">{{ payments|length }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Info -->
+                <div class="bg-white rounded-2xl shadow-lg p-6" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="text-xl font-bold mb-4 text-dark-gray">Profile</h3>
+                    <div class="space-y-3 text-sm">
+                        <div>
+                            <span class="text-gray-600">Name:</span>
+                            <p class="font-semibold">{{ user.get_full_name|default:user.username }}</p>
+                        </div>
+                        <div>
+                            <span class="text-gray-600">Email:</span>
+                            <p class="font-semibold">{{ user.email }}</p>
+                        </div>
+                        {% if user.profile.phone %}
+                        <div>
+                            <span class="text-gray-600">Phone:</span>
+                            <p class="font-semibold">{{ user.profile.phone }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="bg-gradient-to-br from-dark-gray to-gray-800 text-white rounded-2xl shadow-lg p-6" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="text-xl font-bold mb-4">Quick Actions</h3>
+                    <div class="space-y-3">
+                        <a href="{% url 'classes' %}" class="block bg-white bg-opacity-20 hover:bg-opacity-30 py-3 px-4 rounded-lg transition duration-300">
+                            📅 Browse Classes
+                        </a>
+                        <a href="{% url 'locations' %}" class="block bg-white bg-opacity-20 hover:bg-opacity-30 py-3 px-4 rounded-lg transition duration-300">
+                            📍 Find Locations
+                        </a>
+                        <a href="{% url 'contact' %}" class="block bg-white bg-opacity-20 hover:bg-opacity-30 py-3 px-4 rounded-lg transition duration-300">
+                            💬 Contact Support
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

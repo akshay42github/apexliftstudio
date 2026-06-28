@@ -1,0 +1,54 @@
+<section class="relative bg-dark-gray text-white overflow-hidden" style="min-height: 100vh;">
+    <!-- Background Image with Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-br from-dark-gray via-gray-900 to-black opacity-90"></div>
+
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute w-96 h-96 bg-gold opacity-10 rounded-full -top-20 -left-20 animate-pulse"></div>
+        <div class="absolute w-96 h-96 bg-gold opacity-10 rounded-full -bottom-20 -right-20 animate-pulse" style="animation-delay: 1s;"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative container mx-auto px-4 py-32 flex items-center min-h-screen">
+        <div class="max-w-3xl" data-aos="fade-right">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                Transform Your
+                <span class="text-gold">Fitness Journey</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-gray-300" data-aos="fade-right" data-aos-delay="200">
+                Experience world-class facilities, expert trainers, and a community dedicated to helping you achieve your goals.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4" data-aos="fade-right" data-aos-delay="400">
+                <a href="{% url 'plans' %}" class="bg-gold text-dark-gray px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-500 transition duration-300 text-center shadow-lg">
+                    Join Now
+                </a>
+                <a href="{% url 'classes' %}" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-dark-gray transition duration-300 text-center">
+                    View Classes
+                </a>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-3 gap-6 mt-16" data-aos="fade-up" data-aos-delay="600">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-gold">500+</div>
+                    <div class="text-gray-400 mt-2">Members</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-gold">50+</div>
+                    <div class="text-gray-400 mt-2">Classes/Week</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-gold">15+</div>
+                    <div class="text-gray-400 mt-2">Expert Trainers</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+    </div>
+</section>

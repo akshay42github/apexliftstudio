@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="pt-20 bg-white">
+    <!-- Header -->
+    <section class="py-20 bg-gradient-to-r from-dark-gray to-gray-900 text-white">
+        <div class="container mx-auto px-4 text-center" data-aos="fade-up">
+            <h1 class="text-5xl font-bold mb-4">Contact Us</h1>
+            <p class="text-xl text-gray-300">We're here to help you achieve your fitness goals</p>
+        </div>
+    </section>
+    
+    <!-- Contact Form & Info -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                <!-- Contact Form -->
+                <div data-aos="fade-right">
+                    <h2 class="text-3xl font-bold mb-6 text-dark-gray">Send Us a Message</h2>
+                    <form method="post" class="space-y-6">
+                        {% csrf_token %}
+                        
+                        {% if form.non_field_errors %}
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+                        
+                        <div>
+                            <label for="{{ form.name.id_for_label }}" class="block text-sm font-semibold mb-2 text-gray-700">Name</label>
+                            {{ form.name }}
+                            {% if form.name.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.name.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                        
+                        <div>
+                            <label for="{{ form.email.id_for_label }}" class="block text-sm font-semibold mb-2 text-gray-700">Email</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.email.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                        
+                        <div>
+                            <label for="{{ form.subject.id_for_label }}" class="block text-sm font-semibold mb-2 text-gray-700">Subject</label>
+                            {{ form.subject }}
+                            {% if form.subject.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.subject.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                        
+                        <div>
+                            <label for="{{ form.message.id_for_label }}" class="block text-sm font-semibold mb-2 text-gray-700">Message</label>
+                            {{ form.message }}
+                            {% if form.message.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.message.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-gold text-dark-gray py-4 rounded-full font-bold text-lg hover:bg-yellow-500 transition duration-300">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Contact Info -->
+                <div data-aos="fade-left">
+                    <h2 class="text-3xl font-bold mb-6 text-dark-gray">Get In Touch</h2>
+                    
+                    <div class="space-y-6 mb-8">
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-gold rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <svg class="w-6 h-6 text-dark-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1 text-dark-gray">Mobile</h3>
+                                <p class="text-gray-600">+919140219163</p>
+                                <p class="text-sm text-gray-500">Mon-Fri 6AM-10PM</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-gold rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <svg class="w-6 h-6 text-dark-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1 text-dark-gray">Email</h3>
+                                <p class="text-gray-600">info@apexliftstudio.com</p>
+                                <p class="text-sm text-gray-500">We reply within 24 hours</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-gold rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <svg class="w-6 h-6 text-dark-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1 text-dark-gray">Address</h3>
+                                <p class="text-gray-600">123 Fitness<br>Sandip University, Nashik, Maharashtra 422213</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-light-gray p-6 rounded-2xl">
+                        <h3 class="font-bold text-xl mb-4 text-dark-gray">Office Hours</h3>
+                        <div class="space-y-2 text-gray-700">
+                            <div class="flex justify-between">
+                                <span>Monday - Friday:</span>
+                                <span class="font-semibold">6:00 AM - 10:00 PM</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Saturday:</span>
+                                <span class="font-semibold">7:00 AM - 9:00 PM</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Sunday:</span>
+                                <span class="font-semibold">8:00 AM - 8:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ Section -->
+    <section class="py-20 bg-light-gray">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-12 text-dark-gray" data-aos="fade-up">Frequently Asked Questions</h2>
+                
+                <div class="space-y-4">
+                    <details class="bg-white rounded-lg shadow-md p-6 group" data-aos="fade-up">
+                        <summary class="font-bold text-lg cursor-pointer list-none flex justify-between items-center">
+                            <span>What are your membership options?</span>
+                            <span class="text-gold">+</span>
+                        </summary>
+                        <p class="text-gray-600 mt-4">We offer Basic, Plus, and Premium membership tiers with monthly or annual billing. Visit our Plans page for detailed information.</p>
+                    </details>
+                    
+                    <details class="bg-white rounded-lg shadow-md p-6 group" data-aos="fade-up" data-aos-delay="100">
+                        <summary class="font-bold text-lg cursor-pointer list-none flex justify-between items-center">
+                            <span>Do you offer personal training?</span>
+                            <span class="text-gold">+</span>
+                        </summary>
+                        <p class="text-gray-600 mt-4">Yes! Personal training sessions are included with our Premium membership, or can be purchased separately. Contact us to schedule a consultation.</p>
+                    </details>
+                    
+                    <details class="bg-white rounded-lg shadow-md p-6 group" data-aos="fade-up" data-aos-delay="200">
+                        <summary class="font-bold text-lg cursor-pointer list-none flex justify-between items-center">
+                            <span>Can I try the gym before joining?</span>
+                            <span class="text-gold">+</span>
+                        </summary>
+                        <p class="text-gray-600 mt-4">Absolutely! We offer a free 7-day trial pass for first-time visitors. Contact us to schedule your visit and tour.</p>
+                    </details>
+
+                    <details class="bg-white rounded-lg shadow-md p-6 group" data-aos="fade-up" data-aos-delay="300">
+                        <summary class="font-bold text-lg cursor-pointer list-none flex justify-between items-center">
+                            <span>What safety protocols do you have in place?</span>
+                            <span class="text-gold">+</span>
+                        </summary>
+                        <p class="text-gray-600 mt-4">We maintain rigorous cleaning standards, provide sanitization stations throughout the facility, and ensure proper equipment maintenance and staff training.</p>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

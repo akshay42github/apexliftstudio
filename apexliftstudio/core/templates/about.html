@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="pt-20 bg-white">
+    <!-- Header -->
+    <section class="py-20 bg-gradient-to-r from-dark-gray to-gray-900 text-white">
+        <div class="container mx-auto px-4 text-center" data-aos="fade-up">
+            <h1 class="text-5xl font-bold mb-4">About ApexLiftStudio</h1>
+            <p class="text-xl text-gray-300">Building a healthier, stronger community</p>
+        </div>
+    </section>
+    
+    <!-- Mission Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center" data-aos="fade-up">
+                <h2 class="text-4xl font-bold text-dark-gray mb-6">Our Mission</h2>
+                <p class="text-xl text-gray-700 leading-relaxed mb-8">
+                    At ApexLiftStudio, we believe that fitness is a journey, not a destination. Our mission is to provide a welcoming, inclusive environment where everyone—from beginners to elite athletes—can achieve their personal best.
+                </p>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                    We combine state-of-the-art facilities, expert trainers, and a supportive community to create an unparalleled fitness experience. Whether you're looking to lose weight, build muscle, improve your health, or simply feel better, we're here to support you every step of the way.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Values Section -->
+    <section class="py-20 bg-light-gray">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16 text-dark-gray" data-aos="fade-up">Our Values</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="bg-white p-8 rounded-2xl shadow-lg text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 bg-gold rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">💪</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-dark-gray">Excellence</h3>
+                    <p class="text-gray-600">We strive for excellence in everything we do, from our equipment to our customer service.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-16 h-16 bg-gold rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">🤝</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-dark-gray">Community</h3>
+                    <p class="text-gray-600">We foster a supportive community where members encourage and inspire each other.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg text-center" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-16 h-16 bg-gold rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">🎯</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-dark-gray">Results</h3>
+                    <p class="text-gray-600">We're committed to helping you achieve real, measurable results that last.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Trainers Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16 text-dark-gray" data-aos="fade-up">Meet Our Expert Trainers</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                {% for trainer in trainers %}
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                    {% if trainer.photo %}
+                    <img src="{{ trainer.photo.url }}" alt="{{ trainer.name }}" class="w-full h-64 object-cover">
+                    {% else %}
+                    <div class="w-full h-64 bg-gradient-to-br from-gold to-yellow-500 flex items-center justify-center">
+                        <span class="text-6xl text-dark-gray font-bold">{{ trainer.name|slice:":1" }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-dark-gray">{{ trainer.name }}</h3>
+                        <p class="text-gold font-semibold mb-4">{{ trainer.years_experience }} Years Experience</p>
+                        <p class="text-gray-600 mb-4">{{ trainer.bio|truncatewords:20 }}</p>
+                        
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-dark-gray mb-2">Specialties:</h4>
+                            <div class="flex flex-wrap gap-2">
+                                {% for specialty in trainer.get_specialties_list %}
+                                <span class="bg-gold bg-opacity-20 text-dark-gray px-3 py-1 rounded-full text-sm">{{ specialty }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        {% if trainer.certifications %}
+                        <div class="text-sm text-gray-600">
+                            <strong>Certifications:</strong> {{ trainer.certifications }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    
+    <!-- Facilities Section -->
+    <section class="py-20 bg-light-gray">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16 text-dark-gray" data-aos="fade-up">World-Class Facilities</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <div class="bg-white p-8 rounded-2xl shadow-lg" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="text-2xl font-bold mb-4 text-dark-gray">🏋️ Strength Training Zone</h3>
+                    <p class="text-gray-600">Top-of-the-line free weights, Olympic lifting platforms, and resistance machines from leading manufacturers.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="text-2xl font-bold mb-4 text-dark-gray">🏃 Cardio Center</h3>
+                    <p class="text-gray-600">Modern cardio equipment with personal entertainment systems and heart rate monitoring technology.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg" data-aos="fade-up" data-aos-delay="300">
+                    <h3 class="text-2xl font-bold mb-4 text-dark-gray">🧘 Group Fitness Studios</h3>
+                    <p class="text-gray-600">Spacious studios designed for yoga, pilates, dance, and high-intensity group classes.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg" data-aos="fade-up" data-aos-delay="400">
+                    <h3 class="text-2xl font-bold mb-4 text-dark-gray">🌊 Recovery & Wellness</h3>
+                    <p class="text-gray-600">Sauna, steam room, massage therapy, and recovery zones to help your body heal and grow stronger.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-r from-dark-gray to-gray-900 text-white">
+        <div class="container mx-auto px-4 text-center" data-aos="fade-up">
+            <h2 class="text-4xl font-bold mb-6">Ready to Join Our Community?</h2>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">Experience the difference at ApexLiftStudio. Start your transformation today.</p>
+            <a href="{% url 'plans' %}" class="bg-gold text-dark-gray px-10 py-4 rounded-full font-bold text-lg hover:bg-yellow-500 transition duration-300 inline-block">
+                View Membership Plans
+            </a>
+        </div>
+    </section>
+</div>
+{% endblock %}

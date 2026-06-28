@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Membership Plans - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="pt-20 bg-white">
+    <!-- Header -->
+    <section class="py-20 bg-gradient-to-r from-dark-gray to-gray-900 text-white">
+        <div class="container mx-auto px-4 text-center" data-aos="fade-up">
+            <h1 class="text-5xl font-bold mb-4">Membership Plans</h1>
+            <p class="text-xl text-gray-300">Choose the perfect plan for your fitness journey</p>
+        </div>
+    </section>
+    
+    <!-- Plans Grid -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                {% for plan in plans %}
+                <div class="bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col {% if plan.name == 'Plus' %}ring-4 ring-gold transform scale-105{% endif %}" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                    {% if plan.name == 'Plus' %}
+                    <div class="bg-gold text-dark-gray text-center py-2 font-bold">MOST POPULAR</div>
+                    {% endif %}
+                    
+                    <div class="bg-gradient-to-r from-dark-gray to-gray-800 text-white p-8 text-center">
+                        <h3 class="text-3xl font-bold mb-4">{{ plan.name }}</h3>
+                        <p class="text-gray-300 mb-6">{{ plan.description }}</p>
+                        <div class="mb-4">
+                            <div class="text-5xl font-bold text-gold">₹{{ plan.price_monthly }}</div>
+                            <div class="text-sm text-gray-300 mt-2">per month</div>
+                        </div>
+                        <div class="text-sm text-gray-400">
+                            or ₹{{ plan.price_yearly }}/year <span class="text-gold font-semibold">(Save {{ plan.price_monthly|floatformat:0|add:"0"|add:"0"|add:"0"|add:"0" }})</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-8 flex flex-col flex-1">
+                        <ul class="space-y-4 mb-8">
+                            {% for feature in plan.get_features_list %}
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-gold mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="text-gray-700">{{ feature }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        
+                        {% if user.is_authenticated %}
+                        <button onclick="selectPlan({{ plan.id }}, '{{ plan.name }}')" class="mt-auto block w-full bg-gold text-dark-gray py-4 rounded-full font-bold text-center hover:bg-yellow-500 transition duration-300 shadow-lg">
+                            Select Plan
+                        </button>
+                        {% else %}
+                        <a href="{% url 'register' %}?plan={{ plan.slug }}" class="mt-auto block w-full bg-gold text-dark-gray py-4 rounded-full font-bold text-center hover:bg-yellow-500 transition duration-300 shadow-lg">
+                            Get Started
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ Section -->
+    <section class="py-20 bg-light-gray">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-12" data-aos="fade-up">Frequently Asked Questions</h2>
+                
+                <div class="space-y-4">
+                    <div class="bg-white rounded-lg shadow-md p-6" data-aos="fade-up">
+                        <h3 class="text-xl font-bold mb-2">Can I cancel my membership anytime?</h3>
+                        <p class="text-gray-600">Yes, you can cancel your membership at any time with 30 days notice. No long-term contracts required.</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6" data-aos="fade-up" data-aos-delay="100">
+                        <h3 class="text-xl font-bold mb-2">Do you offer a free trial?</h3>
+                        <p class="text-gray-600">We offer a complimentary 7-day pass for first-time visitors. Contact us to schedule your visit!</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6" data-aos="fade-up" data-aos-delay="200">
+                        <h3 class="text-xl font-bold mb-2">Can I upgrade or downgrade my plan?</h3>
+                        <p class="text-gray-600">Absolutely! You can change your membership tier at any time from your dashboard.</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6" data-aos="fade-up" data-aos-delay="300">
+                        <h3 class="text-xl font-bold mb-2">Are there any hidden fees?</h3>
+                        <p class="text-gray-600">No hidden fees! The price you see is what you pay. One-time enrollment fee of ₹49 applies to new members.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Plan Selection Modal -->
+{% if user.is_authenticated %}
+<div id="plan-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+        <h3 class="text-2xl font-bold mb-4">Select Billing Cycle</h3>
+        <p class="text-gray-600 mb-6">Choose your preferred billing option for the <span id="selected-plan-name" class="font-bold text-gold"></span> plan.</p>
+        
+        <div class="space-y-4 mb-6">
+            <button onclick="checkout('monthly')" class="w-full bg-dark-gray text-white py-4 rounded-lg font-bold hover:bg-gray-800 transition duration-300">
+                Monthly Billing
+            </button>
+            <button onclick="checkout('yearly')" class="w-full bg-gold text-dark-gray py-4 rounded-lg font-bold hover:bg-yellow-500 transition duration-300">
+                Yearly Billing (Save More!)
+            </button>
+        </div>
+        
+        <button onclick="closeModal()" class="w-full text-gray-600 hover:text-gray-800 font-semibold">
+            Cancel
+        </button>
+    </div>
+</div>
+
+<script src="{% static 'js/stripe_checkout.js' %}"></script>
+<script>
+let selectedPlanId = null;
+
+function selectPlan(planId, planName) {
+    selectedPlanId = planId;
+    document.getElementById('selected-plan-name').textContent = planName;
+    document.getElementById('plan-modal').classList.remove('hidden');
+    document.getElementById('plan-modal').classList.add('flex');
+}
+
+function closeModal() {
+    document.getElementById('plan-modal').classList.add('hidden');
+    document.getElementById('plan-modal').classList.remove('flex');
+}
+
+async function checkout(billingCycle) {
+    if (!selectedPlanId) return;
+    
+    try {
+        const response = await fetch('/api/stripe/create-checkout/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + '{{ request.user.auth_token.key|default:"" }}',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                plan_id: selectedPlanId,
+                billing_cycle: billingCycle
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.session_url) {
+            window.location.href = data.session_url;
+        } else {
+            alert('Error creating checkout session. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    }
+}
+</script>
+{% endif %}
+{% endblock %}

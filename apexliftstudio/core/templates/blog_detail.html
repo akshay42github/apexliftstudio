@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ post.title }} - Blog - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="pt-20 bg-white">
+    <!-- Header -->
+    <section class="py-12 bg-light-gray">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <nav class="text-sm mb-6" data-aos="fade-up">
+                    <a href="{% url 'home' %}" class="text-gray-600 hover:text-gold">Home</a>
+                    <span class="mx-2 text-gray-400">›</span>
+                    <a href="{% url 'blog_list' %}" class="text-gray-600 hover:text-gold">Blog</a>
+                    <span class="mx-2 text-gray-400">›</span>
+                    <span class="text-dark-gray">{{ post.title|truncatewords:5 }}</span>
+                </nav>
+                
+                <h1 class="text-4xl md:text-5xl font-bold text-dark-gray mb-4" data-aos="fade-up" data-aos-delay="100">
+                    {{ post.title }}
+                </h1>
+                
+                <div class="flex items-center text-gray-600 mb-6" data-aos="fade-up" data-aos-delay="200">
+                    <span>By {{ post.author.get_full_name|default:post.author.username }}</span>
+                    <span class="mx-3">•</span>
+                    <span>{{ post.published_at|date:"F d, Y" }}</span>
+                    <span class="mx-3">•</span>
+                    <span>{{ post.views_count }} views</span>
+                </div>
+                
+                {% if post.tags %}
+                <div class="flex flex-wrap gap-2 mb-6" data-aos="fade-up" data-aos-delay="300">
+                    {% for tag in post.get_tags_list %}
+                    <span class="bg-gold bg-opacity-20 text-dark-gray px-4 py-1 rounded-full text-sm">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Image -->
+    {% if post.featured_image %}
+    <section class="py-8">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" 
+                     class="w-full h-96 object-cover rounded-2xl shadow-2xl" data-aos="fade-up">
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    
+    <!-- Content -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="prose prose-lg max-w-none" data-aos="fade-up">
+                    {{ post.body|linebreaks }}
+                </div>
+                
+                <!-- Share Buttons -->
+                <div class="mt-12 pt-8 border-t border-gray-200" data-aos="fade-up">
+                    <h3 class="text-xl font-bold mb-4 text-dark-gray">Share this article</h3>
+                    <div class="flex space-x-4">
+                        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ post.title }}" 
+                           target="_blank"
+                           class="bg-blue-400 text-white px-6 py-2 rounded-full hover:bg-blue-500 transition duration-300">
+                            Twitter
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" 
+                           target="_blank"
+                           class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300">
+                            Facebook
+                        </a>
+                        <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ post.title }}" 
+                           target="_blank"
+                           class="bg-blue-700 text-white px-6 py-2 rounded-full hover:bg-blue-800 transition duration-300">
+                            LinkedIn
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Related Posts -->
+    {% if related_posts %}
+    <section class="py-20 bg-light-gray">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold mb-12 text-dark-gray text-center" data-aos="fade-up">Related Articles</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {% for related_post in related_posts %}
+                    <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                        {% if related_post.featured_image %}
+                        <img src="{{ related_post.featured_image.url }}" alt="{{ related_post.title }}" class="w-full h-40 object-cover">
+                        {% else %}
+                        <div class="w-full h-40 bg-gradient-to-br from-gold to-yellow-500"></div>
+                        {% endif %}
+                        
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2 text-dark-gray hover:text-gold transition duration-300">
+                                <a href="{% url 'blog_detail' related_post.slug %}">{{ related_post.title|truncatewords:10 }}</a>
+                            </h3>
+                            <p class="text-gray-600 text-sm mb-4">{{ related_post.excerpt|default:related_post.body|truncatewords:15 }}</p>
+                            <a href="{% url 'blog_detail' related_post.slug %}" class="text-gold font-semibold hover:underline text-sm">
+                                Read More →
+                            </a>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}
