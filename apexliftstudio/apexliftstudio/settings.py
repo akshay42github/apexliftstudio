@@ -72,29 +72,18 @@ WSGI_APPLICATION = 'apexliftstudio.wsgi.application'
 
 # Database - SQLite for local development
 DATABASE_URL = config('DATABASE_URL', default='')
-if DATABASE_URL and DATABASE_URL.startswith('postgresql'):
-    # PostgreSQL configuration (requires psycopg2-binary and dj-database-url)
-    # try:
-        import dj_database_url
-        DATABASES = {
-            'default': dj_database_url.parse(DATABASE_URL)
+if DATABASE_URL:
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
-    # except ImportError:
-    #     # Fallback to SQLite if dependencies not installed
-    #     DATABASES = {
-    #         'default': {
-    #             'ENGINE': 'django.db.backends.sqlite3',
-    #             'NAME': BASE_DIR / 'db.sqlite3',
-    #         }
-    #     }
-# else:
-#     # SQLite for development (default)
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': BASE_DIR / 'db.sqlite3',
-#         }
-#     }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
