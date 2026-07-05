@@ -58,8 +58,8 @@ class Command(BaseCommand):
                 'name': 'Basic',
                 'slug': 'basic',
                 'description': 'Perfect for getting started with your fitness journey',
-                'price_monthly': Decimal('29.99'),
-                'price_yearly': Decimal('299.99'),
+                'price_monthly': Decimal('499.99'),
+                'price_yearly': Decimal('4999.99'),
                 'features': [
                     'Access to gym equipment',
                     'Locker rental',
@@ -72,8 +72,8 @@ class Command(BaseCommand):
                 'name': 'Plus',
                 'slug': 'plus',
                 'description': 'Enhanced experience with group classes included',
-                'price_monthly': Decimal('49.99'),
-                'price_yearly': Decimal('499.99'),
+                'price_monthly': Decimal('899.99'),
+                'price_yearly': Decimal('9999.99'),
                 'features': [
                     'All Basic features',
                     'Unlimited group classes',
@@ -87,8 +87,8 @@ class Command(BaseCommand):
                 'name': 'Premium',
                 'slug': 'premium',
                 'description': 'Ultimate fitness experience with personal training',
-                'price_monthly': Decimal('89.99'),
-                'price_yearly': Decimal('899.99'),
+                'price_monthly': Decimal('1299.99'),
+                'price_yearly': Decimal('13999.99'),
                 'features': [
                     'All Plus features',
                     '4 personal training sessions/month',
@@ -157,32 +157,32 @@ class Command(BaseCommand):
         # Create locations
         locations_data = [
             {
-                'name': 'Downtown Branch',
-                'slug': 'downtown',
-                'address': '123 Main Street',
-                'city': 'New York',
-                'state': 'NY',
-                'postal_code': '10001',
-                'latitude': 40.7589,
-                'longitude': -73.9851,
-                'phone': '555-1001',
-                'email': 'downtown@apexlift.com',
-                'hours': 'Mon-Fri: 5AM-11PM, Sat-Sun: 7AM-9PM',
-                'amenities': 'Pool, Sauna, Steam Room, Cafe, Childcare'
+                'name': 'Andheri Branch',
+                'slug': 'andheri',
+                'address': '12 Link Road, Andheri West',
+                'city': 'Mumbai',
+                'state': 'Maharashtra',
+                'postal_code': '400053',
+                'latitude': 19.1364,
+                'longitude': 72.8296,
+                'phone': '022-40011001',
+                'email': 'andheri@apexlift.com',
+                'hours': 'Mon-Fri: 5AM-11PM, Sat-Sun: 6AM-10PM',
+                'amenities': 'Pool, Steam Room, Personal Training, Cafe, Parking'
             },
             {
-                'name': 'Westside Branch',
-                'slug': 'westside',
-                'address': '456 West Avenue',
-                'city': 'New York',
-                'state': 'NY',
-                'postal_code': '10025',
-                'latitude': 40.7829,
-                'longitude': -73.9654,
-                'phone': '555-1002',
-                'email': 'westside@apexlift.com',
-                'hours': 'Mon-Fri: 6AM-10PM, Sat-Sun: 8AM-8PM',
-                'amenities': 'Sauna, Basketball Court, Yoga Studio'
+                'name': 'Koramangala Branch',
+                'slug': 'koramangala',
+                'address': '45 5th Block, Koramangala',
+                'city': 'Bengaluru',
+                'state': 'Karnataka',
+                'postal_code': '560095',
+                'latitude': 12.9352,
+                'longitude': 77.6245,
+                'phone': '080-50022002',
+                'email': 'koramangala@apexlift.com',
+                'hours': 'Mon-Fri: 5AM-10PM, Sat-Sun: 7AM-9PM',
+                'amenities': 'Yoga Studio, CrossFit Zone, Sauna, Juice Bar, Locker Room'
             }
         ]
 
