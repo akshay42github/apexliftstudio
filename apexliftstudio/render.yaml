@@ -1,0 +1,33 @@
+databases:
+  - name: apexliftstudio-db
+    databaseName: apexliftdb
+    user: apexlift
+    plan: free
+
+services:
+  - type: web
+    name: apexliftstudio
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: False
+      - key: ALLOWED_HOSTS
+        value: .onrender.com
+      - key: DATABASE_URL
+        fromDatabase:
+          name: apexliftstudio-db
+          property: connectionString
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_PUBLISHABLE_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: GOOGLE_MAPS_API_KEY
+        sync: false
+      - key: PYTHON_VERSION
+        value: 3.11.0

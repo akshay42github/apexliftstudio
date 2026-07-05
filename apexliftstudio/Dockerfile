@@ -8,6 +8,12 @@ ENV PYTHONUNBUFFERED=1
 # Set work directory
 WORKDIR /app
 
+# Install system dependencies (needed for psycopg2-binary + Pillow)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpq-dev \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install Python dependencies
 COPY requirements.txt /app/
 RUN pip install --upgrade pip && pip install -r requirements.txt
@@ -19,7 +25,10 @@ COPY . /app/
 COPY entrypoint.sh /app/
 RUN chmod +x /app/entrypoint.sh
 
-# Expose port
+# Create staticfiles and media directories
+RUN mkdir -p /app/staticfiles /app/media
+
+# Expose port (Render will map its own PORT env var)
 EXPOSE 8000
 
 # Run entrypoint

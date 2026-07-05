@@ -7,3 +7,34 @@ venv/
 *.log
 staticfiles/
 media/
+
+# Python
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.venv/
+env/
+
+# Django
+db.sqlite3-journal
+/media
+/staticfiles
+
+# Environment
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
