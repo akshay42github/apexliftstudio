@@ -1,3 +1,29 @@
+# 🚀 ApexLift Studio
+
+Official website for ApexLift Studio.
+
+[![Live Website](https://img.shields.io/badge/🌐-Live_Website-blue?style=for-the-badge)](https://apexliftstudio.in)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/YOUR_USERNAME/YOUR_REPOSITORY)
+
+---
+
+## 🔗 Live Demo
+
+👉 https://apexliftstudio.in
+
+## 🛠 Tech Stack
+
+- HTML5
+- CSS3
+- JavaScript
+- Render (Hosting)
+- GoDaddy (Domain)
+
+
+## 📸 Website Preview
+
+![ApexLift Studio](assets/preview.png)
+
 # ApexLiftStudio - Django Gym Management System
 
 A complete, production-ready gym management web application built with Django, featuring membership management, class booking, Stripe payments, and Google Maps integration.
